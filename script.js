@@ -28,18 +28,21 @@ document.addEventListener('DOMContentLoaded', function () {
             const productName = this.getAttribute('data-product');
             let productPrice = parseFloat(this.getAttribute('data-price'));
 
-            // Check if an add-on checkbox is present
-            const addonCheckbox = this.parentElement.querySelector('.addon');
-            if (addonCheckbox && addonCheckbox.checked) {
-                const addOnPrice = parseFloat(addonCheckbox.getAttribute('data-add-price'));
-                productPrice += addOnPrice;
-            }
+            // Check if both add-on checkboxes are present and checked
+            const addonCheckboxes = this.parentElement.querySelectorAll('.addon');
+            let addonPrice = 0;
+            addonCheckboxes.forEach(checkbox => {
+                if (checkbox.checked) {
+                    addonPrice += parseFloat(checkbox.getAttribute('data-add-price'));
+                }
+            });
+
+            productPrice += addonPrice;
 
             cartItems.push({ name: productName, price: productPrice });
             updateCartDisplay();
         });
     });
-
 
     document.getElementById('checkout-button').addEventListener('click', function () {
         const cartItemsInput = document.getElementById('cart-items-input');
